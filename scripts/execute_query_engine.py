@@ -5,7 +5,6 @@ import time
 ############################
 # You can edit you code HERE
 from table_query_engine import initialize_query_engine
-
 ############################
 
 if __name__ == "__main__":
@@ -19,11 +18,17 @@ if __name__ == "__main__":
         default="./output.jsonl",
         help="Path to output response.",
     )
+    parser.add_argument(
+        "--table",
+        type = str , 
+        default= "A"
+    )
     args = parser.parse_args()
 
     ############################
     # You can edit you code HERE
-    query_engine = initialize_query_engine()
+
+    query_engine = initialize_query_engine(args.table)
     ############################
 
     with open(args.query_json, "r") as f:
@@ -34,7 +39,7 @@ if __name__ == "__main__":
 
     for idx, query_str in enumerate(query_json):
         t1 = time.time()
-        response = query_engine(query_str).response
+        response = query_engine.query(query_str).response
         elapsed_time = time.time() - t1
         with open(args.save_dir, "a") as f:
             json.dump(
